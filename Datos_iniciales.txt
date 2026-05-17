@@ -1,0 +1,52 @@
+INSERT INTO estado(nombre_estado) VALUES
+('Vivo'),
+('Enfermo'),
+('Trasladado'),
+('Muerto');
+
+INSERT INTO ambiente(nombre) VALUES
+('Selva'),
+('Desierto'),
+('Acuatico'),
+('Sabana');
+
+INSERT INTO unidad_medida(nombre_unidad) VALUES
+('Kilogramos'),
+('Gramos'),
+('Litros');
+
+CONSTRAINT EXPLICACIÓN
+CONSTRAINT fk_alimento_porcion
+FOREIGN KEY (cod_alimento_por)
+REFERENCES alimentos(cod_alimento)
+
+¿Qué significa?
+
+Le está diciendo a la base de datos: “El campo cod_alimento_por de la tabla porciones debe existir previamente en la tabla alimentos.”
+
+) ENGINE\=InnoDB DEFAULT CHARSET\=latin1 COLLATE=latin1\_spanish\_ci;
+Define el motor de almacenamiento de MySQL.
+
+✅ InnoDB permite:
+
+usar FOREIGN KEY,
+relaciones entre tablas,
+transacciones,
+integridad de datos.
+
+DEFAULT CHARSET=latin1
+Define el conjunto de caracteres que usará la tabla.
+
+✅ latin1 permite almacenar caracteres occidentales como:
+
+á
+é
+ñ
+
+COLLATE=latin1_spanish_ci
+Define cómo se comparan y ordenan los textos.
+
+✅ spanish_ci:
+
+usa reglas del español,
+ignora mayúsculas/minúsculas (ci = case insensitive).

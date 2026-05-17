@@ -1,0 +1,137 @@
+CREATE DATABASE zoologico;
+USE zoologico;
+
+-- =========================================
+-- TABLA ACCESO
+-- =========================================
+
+CREATE TABLE acceso (
+    usuario VARCHAR(20) COLLATE latin1_spanish_ci NOT NULL,
+    clave VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+    PRIMARY KEY(usuario)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- =========================================
+-- TABLA UNIDAD MEDIDA
+-- =========================================
+
+CREATE TABLE unidad_medida (
+    id_unidad INT(11) NOT NULL AUTO_INCREMENT,
+    nombre_unidad VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+    PRIMARY KEY(id_unidad)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- =========================================
+-- TABLA ALIMENTOS
+-- =========================================
+
+CREATE TABLE alimentos (
+    cod_alimento INT(11) NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(20) COLLATE latin1_spanish_ci NOT NULL,
+    unidad_medida INT(11) NOT NULL,
+    PRIMARY KEY(cod_alimento),
+
+    CONSTRAINT fk_unidad_alimento
+    FOREIGN KEY (unidad_medida)
+    REFERENCES unidad_medida(id_unidad)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- =========================================
+-- TABLA AMBIENTE
+-- =========================================
+
+CREATE TABLE ambiente (
+    id_ambiente INT(11) NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(20) COLLATE latin1_spanish_ci NOT NULL,
+    PRIMARY KEY(id_ambiente)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- =========================================
+-- TABLA ESTADO
+-- =========================================
+
+CREATE TABLE estado (
+    id_estado INT(11) NOT NULL AUTO_INCREMENT,
+    nombre_estado VARCHAR(15) COLLATE latin1_spanish_ci NOT NULL,
+    PRIMARY KEY(id_estado)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- =========================================
+-- TABLA ESPECIES
+-- =========================================
+
+CREATE TABLE especies (
+    codigo_esp INT(11) NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(20) COLLATE latin1_spanish_ci NOT NULL,
+    cantidad_esp INT(11) NOT NULL,
+    ambiente_esp INT(11) NOT NULL,
+    PRIMARY KEY(codigo_esp),
+
+    CONSTRAINT fk_ambiente_especie
+    FOREIGN KEY (ambiente_esp)
+    REFERENCES ambiente(id_ambiente)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- =========================================
+-- TABLA ANIMAL
+-- =========================================
+
+CREATE TABLE animal (
+    id_animal INT(11) NOT NULL AUTO_INCREMENT,
+    nombre_animal VARCHAR(20) COLLATE latin1_spanish_ci NOT NULL,
+    fecha_ingreso DATE NOT NULL,
+    fecha_salida DATE DEFAULT NULL,
+    fecha_muerte DATE DEFAULT NULL,
+    estado_an INT(11) NOT NULL,
+    cod_esp_an INT(11) NOT NULL,
+    imagen VARCHAR(200) COLLATE latin1_spanish_ci NOT NULL,
+
+    PRIMARY KEY(id_animal),
+
+    CONSTRAINT fk_estado_animal
+    FOREIGN KEY (estado_an)
+    REFERENCES estado(id_estado),
+
+    CONSTRAINT fk_especie_animal
+    FOREIGN KEY (cod_esp_an)
+    REFERENCES especies(codigo_esp)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- =========================================
+-- TABLA PORCIONES
+-- =========================================
+
+CREATE TABLE porciones (
+    id_porcion INT(11) NOT NULL AUTO_INCREMENT,
+    fecha DATE NOT NULL,
+    hora INT(11) NOT NULL,
+    cantidad_alimento INT(11) NOT NULL,
+    cod_alimento_por INT(11) NOT NULL,
+    cod_animal_por INT(11) NOT NULL,
+
+    PRIMARY KEY(id_porcion),
+
+    CONSTRAINT fk_alimento_porcion
+    FOREIGN KEY (cod_alimento_por)
+    REFERENCES alimentos(cod_alimento),
+
+    CONSTRAINT fk_animal_porcion
+    FOREIGN KEY (cod_animal_por)
+    REFERENCES animal(id_animal)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- =========================================
+-- TABLA USUARIO
+-- =========================================
+
+CREATE TABLE usuario (
+    nombre_usuario VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+    clave VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+
+    PRIMARY KEY(nombre_usuario)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
